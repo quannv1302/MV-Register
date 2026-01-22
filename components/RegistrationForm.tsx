@@ -117,11 +117,16 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
         </div>
         <h2 className="text-3xl font-extrabold text-brand-blue mb-4">Đăng ký thành công!</h2>
         <p className="text-slate-500 mb-8 max-w-md mx-auto text-base leading-relaxed">
-          Cảm ơn <span className="font-semibold text-slate-800">{formData.parent.fullName}</span> đã tin tưởng MV Academy. <br />
-          Bộ phận tư vấn sẽ liên hệ với bạn trong vòng 24h tới.
+          Vui lòng đợi Email xác nhận từ Minh Việt.
         </p>
         <div className="flex gap-4">
-          <Button onClick={onClose} className="bg-brand-blue text-white hover:bg-blue-700 rounded-xl px-8 py-3 h-auto shadow-lg shadow-blue-200">Quay lại trang chủ</Button>
+          <Button
+            onClick={onClose}
+            className="flex items-center gap-2 bg-brand-blue text-white hover:bg-blue-700 rounded-xl px-8 py-3 h-auto shadow-lg shadow-blue-200 transition-all active:scale-95"
+          >
+            <ArrowLeft size={20} />
+            <span>Quay lại trang chủ</span>
+          </Button>
         </div>
       </div>
     );
@@ -212,6 +217,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
                 <div className="space-y-6">
                   <FloatingInput
                     label="Họ và tên"
+                    required={true}
                     value={formData.parent.fullName}
                     onChange={handleParentChange}
                     name="fullName"
@@ -220,6 +226,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
                   />
                   <FloatingInput
                     label="Email"
+                    required={true}
                     type="email"
                     value={formData.parent.email}
                     onChange={handleParentChange}
@@ -228,6 +235,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
                   />
                   <FloatingInput
                     label="Số điện thoại"
+                    required={true}
                     type="tel"
                     value={formData.parent.phone}
                     onChange={handleParentChange}
@@ -237,6 +245,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
                   <div className="grid grid-cols-2 gap-4">
                     <FloatingInput
                       label="Ngày sinh"
+                      required={true}
                       type="date"
                       value={formData.parent.dob}
                       onChange={handleParentChange}
@@ -244,6 +253,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
                     />
                     <FloatingSelect
                       label="Giới tính"
+                      required={true}
                       value={formData.parent.gender}
                       onChange={handleParentChange}
                       name="gender"
@@ -450,6 +460,7 @@ const StudentFormCard = ({ student, index, total, onChange, onRemove }: any) => 
       <div className="space-y-6">
         <FloatingInput
           label="Họ và tên"
+          required={true}
           value={student.fullName}
           onChange={(e) => onChange(student.id, 'fullName', e.target.value)}
           placeholder="Nhập họ và tên học sinh"
@@ -458,12 +469,14 @@ const StudentFormCard = ({ student, index, total, onChange, onRemove }: any) => 
         <div className="grid grid-cols-2 gap-4">
           <FloatingInput
             label="Ngày sinh"
+            required={true}
             type="date"
             value={student.dob}
             onChange={(e) => onChange(student.id, 'dob', e.target.value)}
           />
           <FloatingSelect
             label="Giới tính"
+            required={true}
             value={student.gender}
             onChange={(e) => onChange(student.id, 'gender', e.target.value)}
             options={Object.values(Gender)}
@@ -471,7 +484,7 @@ const StudentFormCard = ({ student, index, total, onChange, onRemove }: any) => 
         </div>
 
         <div className="pt-2">
-          <label className="text-sm font-semibold text-brand-orange uppercase mb-2 block">Chương trình học</label>
+          <label className="text-sm font-semibold text-brand-orange uppercase mb-2 block">Chương trình học<span className="text-red-500 pl-1 font-bold">*</span></label>
           <div className="grid grid-cols-2 gap-3">
             <RadioCard
               title="MVK"
@@ -490,7 +503,7 @@ const StudentFormCard = ({ student, index, total, onChange, onRemove }: any) => 
 
         {student.packageType && (
           <div className="animate-in fade-in slide-in-from-top-2">
-            <label className="text-xs font-semibold text-slate-400 uppercase mb-2 block">Lớp đăng ký</label>
+            <label className="text-xs font-semibold text-slate-900 uppercase mb-2 block">Lớp đăng ký <span className="text-red-500 font-bold">*</span></label>
             <div className="flex flex-wrap gap-2">
               {student.packageType === PackageType.MVK && (
                 <GradePill
@@ -521,27 +534,38 @@ const StudentFormCard = ({ student, index, total, onChange, onRemove }: any) => 
   )
 }
 
-const FloatingInput = ({ label, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string }) => (
+const FloatingInput = ({ label, required, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string, required?: boolean }) => (
   <div className="relative group">
-    <label className="absolute -top-2.5 left-3 bg-white px-1 text-sm text-slate-400 font-regular group-focus-within:text-brand-blue transition-colors z-10">
+    <label className="absolute -top-2.5 left-3 bg-white px-1 text-sm text-slate-400 font-regular group-focus-within:text-brand-blue transition-colors z-10 flex items-center">
       {label}
+      {required && <span className="text-red-500 ml-1 font-bold">*</span>}
     </label>
     <input
       {...props}
+      required={required}
       className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all text-slate-800 placeholder:text-slate-300 bg-white"
     />
   </div>
 );
 
-const FloatingSelect = ({ label, options, ...props }: React.SelectHTMLAttributes<HTMLSelectElement> & { label: string, options: string[] }) => (
+const FloatingSelect = ({
+  label,
+  options,
+  required, // Thêm prop required
+  ...props
+}: React.SelectHTMLAttributes<HTMLSelectElement> & { label: string, options: string[], required?: boolean }) => (
   <div className="relative group">
-    <label className="absolute -top-2.5 left-3 bg-white px-1 text-sm text-slate-400 font-regular group-focus-within:text-brand-blue transition-colors z-10">
+    <label className="absolute -top-2.5 left-3 bg-white px-1 text-sm text-slate-400 font-regular group-focus-within:text-brand-blue transition-colors z-10 flex items-center">
       {label}
+      {required && <span className="text-red-500 ml-1 font-bold">*</span>}
     </label>
     <select
       {...props}
-      className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all text-slate-800 bg-white appearance-none"
+      required={required} // Truyền vào thẻ select để trình duyệt hiểu đây là trường bắt buộc
+      className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all text-slate-800 bg-white appearance-none cursor-pointer"
     >
+      {/* Thêm một option trống mặc định nếu cần */}
+      <option value="" disabled hidden>Chọn {label.toLowerCase()}</option>
       {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
     </select>
     <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">

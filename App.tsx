@@ -3,6 +3,7 @@ import { RegistrationForm } from './components/RegistrationForm';
 import { Modal } from './components/Modal';
 import { Button } from './components/Button';
 
+
 import {
   BookOpen, Globe, Award, Star, Phone, MapPin,
   Facebook, Instagram, Mail, ChevronRight, ChevronLeft, PlayCircle,
@@ -63,18 +64,20 @@ const App: React.FC = () => {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-6 font-semibold text-sm text-slate-600">
-              {/* <a href="#" className="hover:text-brand-blue transition-colors flex items-center gap-1">
-                Phòng thi ảo
-                <span className="bg-red-100 text-red-600 text-[9px] px-1.5 py-0.5 rounded-full uppercase">Hot</span>
-              </a>
               <a href="#chuong-trinh" className="hover:text-brand-blue transition-colors">Khoá học</a>
+              <div className="w-px h-6 bg-slate-200 mx-2"></div>
               <a href="#blog" className="hover:text-brand-blue transition-colors">Blog</a>
-
+              <div className="w-px h-6 bg-slate-200 mx-2"></div>
+              <a href="#blog" className="hover:text-brand-blue transition-colors">Tin tức</a>
               <div className="w-px h-6 bg-slate-200 mx-2"></div>
 
-              <button className="text-brand-blue hover:text-blue-700 transition-colors">Kích hoạt tài khoản</button> */}
-              <Button variant="primary" onClick={openRegistration} className="!rounded-full px-6 !py-2.5 shadow-lg shadow-orange-200 hover:shadow-orange-300 transform hover:-translate-y-0.5 transition-all">
-                Đăng ký tư vấn
+              <Button
+                variant="outline"
+                onClick={openRegistration}
+                className="!rounded-full px-4 py-1.5 text-sm border-2 border-blue-500 text-blue-500 bg-transparent hover:bg-blue-50 shadow-md shadow-blue-100 transform hover:-translate-y-0.5 transition-all font-medium flex items-center gap-1.5"
+              >
+                <Phone size={14} strokeWidth={2.5} />
+                <span>Đăng ký tư vấn</span>
               </Button>
             </div>
           </div>
@@ -106,8 +109,11 @@ const App: React.FC = () => {
           </h1>
 
           {/* Subtext */}
-          <p className="text-lg md:text-xl text-slate-600 max-w-2xl leading-relaxed mb-10 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
+          <p className="text-lg md:text-lg text-slate-600 max-w-2xl leading-relaxed mb-4 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
             Hệ thống bài giảng tương tác và phòng luyện thi ảo giúp trẻ từ 4-10 tuổi chinh phục kiến thức Tiếng Anh & Khoa học theo tiêu chuẩn Common Core (Hoa Kỳ).
+          </p>
+          <p className="text-lg md:text-lg text-brand-blue max-w-2xl leading-relaxed mb-10 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
+            Dự kiến khai giảng: 22/06/2026
           </p>
 
           {/* Buttons */}
@@ -309,9 +315,9 @@ const App: React.FC = () => {
               <span className="text-brand-orange font-bold tracking-wider uppercase text-sm mb-2 block">Đội ngũ chuyên gia</span>
               <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900">Giáo viên bản ngữ & Việt Nam</h2>
             </div>
-            <Button variant="ghost" className="hidden md:flex group text-brand-blue hover:bg-blue-50">
+            {/* <Button variant="ghost" className="hidden md:flex group text-brand-blue hover:bg-blue-50">
               Xem tất cả giáo viên <ChevronRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            </Button> */}
           </div>
 
           <div className="grid md:grid-cols-4 gap-6">
