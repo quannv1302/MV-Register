@@ -369,7 +369,7 @@ const App: React.FC = () => {
               <div className="bg-brand-blue w-8 h-8 rounded-lg flex items-center justify-center">
                 <BookOpen className="text-white w-4 h-4" />
               </div>
-              <span className="font-bold text-xl text-brand-blue">US-VN Academy</span>
+              <span className="font-bold text-xl text-brand-blue">MV Academy</span>
             </div>
             <p className="text-slate-500 text-sm leading-relaxed mb-6">
               Đơn vị tiên phong mang chương trình giáo dục phổ thông Hoa Kỳ đến học sinh Việt Nam.
@@ -404,9 +404,9 @@ const App: React.FC = () => {
           <div>
             <h4 className="font-bold text-slate-900 mb-6">Hỗ trợ</h4>
             <ul className="space-y-3 text-sm text-slate-600">
-              <li className="flex items-center gap-2"><Phone className="w-4 h-4" /> (028) 1234 5678</li>
-              <li className="flex items-center gap-2"><Mail className="w-4 h-4" /> admissions@usvn.edu.vn</li>
-              <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-1 shrink-0" /> Q.7, TP. Hồ Chí Minh</li>
+              <li className="flex items-center gap-2"><Phone className="w-4 h-4" /> 1900.XXXX</li>
+              <li className="flex items-center gap-2"><Mail className="w-4 h-4" /> admin@mv.edu.vn</li>
+              <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-1 shrink-0" /> 123 Hà Nội</li>
             </ul>
           </div>
         </div>
