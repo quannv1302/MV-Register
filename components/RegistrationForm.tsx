@@ -12,7 +12,8 @@ import {
   Check, ChevronRight, User, Phone, Mail,
   Plus, Trash2, ArrowLeft, X, BookOpen, Shapes,
   Calendar, AlertCircle, Sparkles, CheckCircle2,
-  GraduationCap, Mars, Venus
+  GraduationCap, Mars, Venus,
+  ChevronLeft
 } from 'lucide-react';
 
 const INITIAL_PARENT: ParentInfo = {
@@ -134,18 +135,18 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
 
   // --- Split Layout ---
   return (
-    <div className="bg-white w-full h-full md:h-auto min-h-[650px] flex flex-col md:flex-row overflow-hidden">
+    <div className="bg-white w-full h-full md:h-auto md:min-h-[650px] flex flex-col md:flex-row overflow-y-auto md:overflow-hidden">
 
       {/* LEFT PANEL - SIDEBAR */}
       <div className="w-full md:w-80 lg:w-96 bg-brand-blue/5 border-r border-brand-blue/10 p-6 md:p-8 flex flex-col justify-between shrink-0">
         <div>
-          <div className="mb-10">
-            <h2 className="text-2xl font-extrabold text-brand-blue leading-tight mb-2">Đăng ký học thử miễn phí</h2>
+          <div className="">
+            <h2 className="text-2xl font-extrabold text-brand-blue leading-tight">Đăng ký học thử miễn phí</h2>
             {/* <p className="text-slate-500 text-sm">Điền thông tin để được tư vấn lộ trình học tập tốt nhất.</p> */}
           </div>
 
           {/* Vertical Stepper */}
-          <div className="space-y-6 relative">
+          <div className="space-y-6 relative hidden md:block">
             {/* Connector Lines */}
             <div className="absolute left-[15px] top-4 bottom-4 w-0.5 bg-slate-200 z-0"></div>
 
@@ -204,7 +205,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
         )}
 
         {/* Scrollable Form Area */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-10 scrollbar-hide">
+        <div className="flex-1 overflow-visible md:overflow-y-auto p-6 md:p-10 scrollbar-hide">
           <div className="max-w-xl mx-auto pt-2">
 
             {step === 1 && (
@@ -381,13 +382,14 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
         </div>
 
         {/* Footer Actions Panel */}
-        <div className="p-4 md:p-6 border-t border-slate-100 bg-white flex items-center justify-between gap-4 z-20">
+        <div className="sticky bottom-0 p-4 md:p-6 border-t border-slate-100 bg-white flex items-center justify-between gap-4 z-20">
           {step > 1 ? (
             <button
               onClick={() => setStep(step - 1)}
-              className="px-6 py-2.5 rounded-xl text-slate-500 font-semibold hover:bg-slate-100 transition-colors"
+              className="flex items-center gap-2 px-8 py-3 rounded-xl bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200 transition-all active:scale-95"
             >
-              Quay lại
+              <ChevronLeft size={18} />
+              <span>Quay lại</span>
             </button>
           ) : (
             <div></div> // Spacer
