@@ -4,6 +4,13 @@ export enum Gender {
   OTHER = 'Khác'
 }
 
+export enum country {
+  MALE = 'Nam',
+  FEMALE = 'Nữ',
+  OTHER = 'Khác'
+}
+
+
 export enum PackageType {
   MVA = 'MVA (K - Grade 1)',
   MVK = 'MVK (PreK)'

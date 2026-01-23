@@ -5,7 +5,8 @@ import {
   RegistrationData,
   Gender,
   PackageType,
-  GradeLevel
+  GradeLevel,
+  COUNTRIES
 } from '../types';
 import { Button } from './Button';
 import {
@@ -13,7 +14,7 @@ import {
   Plus, Trash2, ArrowLeft, X, BookOpen, Shapes,
   Calendar, AlertCircle, Sparkles, CheckCircle2,
   GraduationCap, Mars, Venus,
-  ChevronLeft
+  ChevronLeft, Globe
 } from 'lucide-react';
 
 const INITIAL_PARENT: ParentInfo = {
@@ -50,10 +51,20 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
 
   const handleParentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      parent: { ...prev.parent, [name]: value }
-    }));
+    setFormData(prev => {
+      // If updating parent country in Step 1, also update all students' country
+      // This ensures the default value for students matches parent
+      let newStudents = prev.students;
+      if (name === 'country' && step === 1) {
+        newStudents = prev.students.map(s => ({ ...s, country: value }));
+      }
+
+      return {
+        ...prev,
+        parent: { ...prev.parent, [name]: value },
+        students: newStudents
+      };
+    });
   };
 
   const handleStudentChange = (id: string, field: keyof StudentInfo, value: any) => {
@@ -73,7 +84,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
     const newId = `student-${Date.now()}`;
     setFormData(prev => ({
       ...prev,
-      students: [...prev.students, { ...INITIAL_STUDENT, id: newId }]
+      students: [...prev.students, { ...INITIAL_STUDENT, id: newId, country: prev.parent.country }]
     }));
   };
 
@@ -261,6 +272,14 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
                       options={Object.values(Gender)}
                     />
                   </div>
+                  <FloatingSelect
+                    label="Quốc gia"
+                    required={true}
+                    value={formData.parent.country}
+                    onChange={handleParentChange}
+                    name="country"
+                    options={COUNTRIES}
+                  />
                 </div>
               </div>
             )}
@@ -321,9 +340,13 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
                         <span className="block text-slate-400 text-sm">Số điện thoại:</span>
                         <span className="font-semibold text-md text-slate-900">{formData.parent.phone}</span>
                       </div>
-                      <div className="sm:col-span-2">
+                      <div>
                         <span className="block text-slate-400 text-sm">Email:</span>
                         <span className="font-semibold text-md text-slate-900">{formData.parent.email}</span>
+                      </div>
+                      <div>
+                        <span className="block text-slate-400 text-sm">Quốc gia:</span>
+                        <span className="font-semibold text-md text-slate-900">{formData.parent.country}</span>
                       </div>
                     </div>
                   </div>
@@ -351,6 +374,10 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
                                 <div className="flex items-center gap-1.5">
                                   {s.gender === Gender.MALE ? <Mars className="w-3.5 h-3.5 text-blue-500" /> : <Venus className="w-3.5 h-3.5 text-pink-500" />}
                                   <span>{s.gender}</span>
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                  <Globe className="w-3.5 h-3.5 text-slate-400" />
+                                  <span>{s.country}</span>
                                 </div>
                               </div>
                             </div>
@@ -484,6 +511,14 @@ const StudentFormCard = ({ student, index, total, onChange, onRemove }: any) => 
             options={Object.values(Gender)}
           />
         </div>
+
+        <FloatingSelect
+          label="Quốc gia"
+          required={true}
+          value={student.country}
+          onChange={(e) => onChange(student.id, 'country', e.target.value)}
+          options={COUNTRIES}
+        />
 
         <div className="pt-2">
           <label className="text-sm font-semibold text-brand-orange uppercase mb-2 block">Chương trình học<span className="text-red-500 pl-1 font-bold">*</span></label>
