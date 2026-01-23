@@ -32,6 +32,18 @@ const App: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
+  const [showNavbarButton, setShowNavbarButton] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show button after scrolling down 500px (past hero roughly)
+      setShowNavbarButton(window.scrollY > 500);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const openRegistration = () => {
     setIsRegistrationOpen(true);
   };
@@ -63,21 +75,22 @@ const App: React.FC = () => {
             </div> */}
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-6 font-semibold text-sm text-slate-600">
-              <a href="#chuong-trinh" className="hover:text-brand-blue transition-colors">Khoá học</a>
-              <div className="w-px h-6 bg-slate-200 mx-2"></div>
-              <a href="#blog" className="hover:text-brand-blue transition-colors">Blog</a>
-              <div className="w-px h-6 bg-slate-200 mx-2"></div>
-              <a href="#blog" className="hover:text-brand-blue transition-colors">Tin tức</a>
-              <div className="w-px h-6 bg-slate-200 mx-2"></div>
+            <div className="flex items-center space-x-6 font-semibold text-sm text-slate-600">
+              <div className="hidden md:flex items-center space-x-6">
+                {/* <a href="#chuong-trinh" className="hover:text-brand-blue transition-colors">Khoá học</a>
+                <div className="w-px h-6 bg-slate-200 mx-2"></div>
+                <a href="#blog" className="hover:text-brand-blue transition-colors">Blog</a>
+                <div className="w-px h-6 bg-slate-200 mx-2"></div>
+                <a href="#blog" className="hover:text-brand-blue transition-colors">Tin tức</a>
+                <div className="w-px h-6 bg-slate-200 mx-2"></div> */}
+              </div>
 
               <Button
-                variant="outline"
+                variant="primary"
                 onClick={openRegistration}
-                className="!rounded-full px-4 py-1.5 text-sm border-2 border-blue-500 text-blue-500 bg-transparent hover:bg-blue-50 shadow-md shadow-blue-100 transform hover:-translate-y-0.5 transition-all font-medium flex items-center gap-1.5"
+                className={`!rounded-full px-4 py-1.5 text-sm bg-orange-500 text-white border-2 border-orange-500 hover:bg-orange-600 hover:border-orange-600 shadow-lg shadow-orange-200 transform hover:-translate-y-0.5 transition-all font-medium flex items-center gap-1.5 ${showNavbarButton ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}
               >
-                <Phone size={14} strokeWidth={2.5} />
-                <span>Đăng ký tư vấn</span>
+                <span>Đăng ký ngay</span>
               </Button>
             </div>
           </div>
