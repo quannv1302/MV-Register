@@ -318,11 +318,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
                         <span className="font-semibold text-md text-slate-900">{formData.parent.fullName}</span>
                       </div>
                       <div>
-                        <span className="block text-slate-400 text-xs">Số điện thoại:</span>
+                        <span className="block text-slate-400 text-sm">Số điện thoại:</span>
                         <span className="font-semibold text-md text-slate-900">{formData.parent.phone}</span>
                       </div>
                       <div className="sm:col-span-2">
-                        <span className="block text-slate-400 text-xs">Email:</span>
+                        <span className="block text-slate-400 text-sm">Email:</span>
                         <span className="font-semibold text-md text-slate-900">{formData.parent.email}</span>
                       </div>
                     </div>
@@ -407,7 +407,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
             }}
             className="flex items-center gap-2 px-8 py-3 rounded-xl bg-brand-blue text-white font-bold hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200 transition-all active:scale-95"
           >
-            {step === 3 ? "Gửi đăng ký" : "Tiếp tục"}
+            {step === 3 ? "Đăng ký" : "Tiếp tục"}
             {step < 3 && <ChevronRight className="w-5 h-5" />}
           </button>
         </div>
@@ -538,14 +538,14 @@ const StudentFormCard = ({ student, index, total, onChange, onRemove }: any) => 
 
 const FloatingInput = ({ label, required, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string, required?: boolean }) => (
   <div className="relative group">
-    <label className="absolute -top-2.5 left-3 bg-white px-1 text-sm text-slate-400 font-regular group-focus-within:text-brand-blue transition-colors z-10 flex items-center">
+    <label className="absolute -top-2.5 left-3 bg-white px-1 text-sm text-slate-500 font-regular group-focus-within:text-brand-blue transition-colors z-10 flex items-center">
       {label}
       {required && <span className="text-red-500 ml-1 font-bold">*</span>}
     </label>
     <input
       {...props}
       required={required}
-      className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all text-slate-800 placeholder:text-slate-300 bg-white"
+      className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all text-slate-700 placeholder:text-slate-400 bg-white"
     />
   </div>
 );
@@ -557,14 +557,14 @@ const FloatingSelect = ({
   ...props
 }: React.SelectHTMLAttributes<HTMLSelectElement> & { label: string, options: string[], required?: boolean }) => (
   <div className="relative group">
-    <label className="absolute -top-2.5 left-3 bg-white px-1 text-sm text-slate-400 font-regular group-focus-within:text-brand-blue transition-colors z-10 flex items-center">
+    <label className="absolute -top-2.5 left-3 bg-white px-1 text-sm text-slate-500 font-regular group-focus-within:text-brand-blue transition-colors z-10 flex items-center">
       {label}
       {required && <span className="text-red-500 ml-1 font-bold">*</span>}
     </label>
     <select
       {...props}
       required={required} // Truyền vào thẻ select để trình duyệt hiểu đây là trường bắt buộc
-      className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all text-slate-800 bg-white appearance-none cursor-pointer"
+      className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all text-slate-700 bg-white appearance-none cursor-pointer"
     >
       {/* Thêm một option trống mặc định nếu cần */}
       <option value="" disabled hidden>Chọn {label.toLowerCase()}</option>
