@@ -4,11 +4,6 @@ export enum Gender {
   OTHER = 'Khác'
 }
 
-export enum country {
-  MALE = 'Nam',
-  FEMALE = 'Nữ',
-  OTHER = 'Khác'
-}
 
 
 export enum PackageType {

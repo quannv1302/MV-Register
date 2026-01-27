@@ -43,6 +43,30 @@
 }
 </script>
   <link rel="stylesheet" href="/index.css">
+  <style>
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-20px) rotate(8deg);
+      }
+
+      /* Bay lên 20px và xoay 8 độ */
+    }
+
+    .animate-float-icon {
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .animate-float-delayed {
+      animation: float 7s ease-in-out 1.5s infinite;
+      /* Chạy chậm hơn và lệch nhịp một chút */
+    }
+  </style>
 </head>
 
 <body class="bg-slate-50 text-slate-800">

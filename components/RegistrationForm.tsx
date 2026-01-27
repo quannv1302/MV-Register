@@ -39,7 +39,17 @@ const INITIAL_STUDENT: StudentInfo = {
 interface RegistrationFormProps {
   onClose?: () => void;
 }
-
+const PHONE_CODES: Record<string, string> = {
+  'Việt Nam': '+84',
+  'United States': '+1',
+  'Australia': '+61',
+  'Canada': '+1',
+  'United Kingdom': '+44',
+  'Japan': '+81',
+  'South Korea': '+82',
+  'Singapore': '+65',
+  // Thêm các quốc gia khác từ danh sách COUNTRIES của bạn vào đây
+};
 export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) => {
   const [step, setStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -51,17 +61,22 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
 
   const handleParentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+
     setFormData(prev => {
-      // If updating parent country in Step 1, also update all students' country
-      // This ensures the default value for students matches parent
       let newStudents = prev.students;
-      if (name === 'country' && step === 1) {
-        newStudents = prev.students.map(s => ({ ...s, country: value }));
+      let newParent = { ...prev.parent, [name]: value };
+
+      // Xử lý riêng khi đổi Quốc gia
+      if (name === 'country') {
+        // 1. Đồng bộ quốc gia cho học sinh
+        if (step === 1) {
+          newStudents = prev.students.map(s => ({ ...s, country: value }));
+        }
       }
 
       return {
         ...prev,
-        parent: { ...prev.parent, [name]: value },
+        parent: newParent,
         students: newStudents
       };
     });
@@ -102,7 +117,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
   };
 
   const validateStep2 = () => {
-    return formData.students.every(s => s.fullName && s.dob && s.packageType && s.gradeLevel);
+    return formData.students.every(s => s.fullName && s.dob && s.gradeLevel);
   };
 
   const handleSubmit = () => {
@@ -164,7 +179,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
             <StepItem
               number={1}
               title="Thông tin phụ huynh"
-              desc="Để liên hệ tư vấn"
+              desc=""
               active={step === 1}
               done={step > 1}
               onClick={() => setStep(1)}
@@ -172,7 +187,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
             <StepItem
               number={2}
               title="Thông tin học sinh"
-              desc="Hồ sơ bé nhập học"
+              desc=""
               active={step === 2}
               done={step > 2}
               onClick={() => validateStep1() && setStep(2)}
@@ -180,7 +195,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
             <StepItem
               number={3}
               title="Xác nhận"
-              desc="Kiểm tra & Gửi"
+              desc=""
               active={step === 3}
               done={step > 3}
               onClick={() => validateStep1() && validateStep2() && setStep(3)}
@@ -191,13 +206,9 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
         {/* Support Info */}
         <div className="mt-8 pt-8 border-t border-brand-blue/10 hidden md:block">
           <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Hỗ trợ trực tuyến</p>
-          <div className="flex items-center gap-3 text-sm text-slate-600 mb-2">
-            <Phone className="w-4 h-4 text-brand-orange" />
-            <span>1900.XXXX</span>
-          </div>
           <div className="flex items-center gap-3 text-sm text-slate-600">
             <Mail className="w-4 h-4 text-brand-orange" />
-            <span>mvhelp@mv.edu.vn</span>
+            <span>support@minhviet.org</span>
           </div>
         </div>
       </div>
@@ -245,6 +256,18 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
                     name="email"
                     placeholder="Nhập địa chỉ email"
                   />
+
+                  {/* 1. QUỐC GIA HIỆN TRƯỚC */}
+                  <FloatingSelect
+                    label="Quốc gia"
+                    required={true}
+                    value={formData.parent.country}
+                    onChange={handleParentChange}
+                    name="country"
+                    options={COUNTRIES}
+                  />
+
+                  {/* 2. SỐ ĐIỆN THOẠI HIỆN SAU (Sẽ nhận mã vùng từ Quốc gia) */}
                   <FloatingInput
                     label="Số điện thoại"
                     required={true}
@@ -253,7 +276,9 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
                     onChange={handleParentChange}
                     name="phone"
                     placeholder="Nhập số điện thoại"
+                    prefix={PHONE_CODES[formData.parent.country] || ''}
                   />
+
                   <div className="grid grid-cols-2 gap-4">
                     <FloatingInput
                       label="Ngày sinh"
@@ -272,14 +297,6 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
                       options={Object.values(Gender)}
                     />
                   </div>
-                  <FloatingSelect
-                    label="Quốc gia"
-                    required={true}
-                    value={formData.parent.country}
-                    onChange={handleParentChange}
-                    name="country"
-                    options={COUNTRIES}
-                  />
                 </div>
               </div>
             )}
@@ -338,7 +355,10 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
                       </div>
                       <div>
                         <span className="block text-slate-400 text-sm">Số điện thoại:</span>
-                        <span className="font-semibold text-md text-slate-900">{formData.parent.phone}</span>
+                        <span className="font-semibold text-md text-slate-900">
+                          {PHONE_CODES[formData.parent.country] ? `${PHONE_CODES[formData.parent.country]} ` : ''}
+                          {formData.parent.phone}
+                        </span>
                       </div>
                       <div>
                         <span className="block text-slate-400 text-sm">Email:</span>
@@ -386,16 +406,13 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) =
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-2 gap-3">
+                          <div className="grid grid-cols-1 gap-3">
                             <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
                               <span className="block text-xs text-slate-500 mb-1">Chương trình</span>
                               <span className="block text-sm font-bold text-brand-blue">
-                                {s.packageType === 'MVK' ? 'MVK (Mầm non)' : 'MVA (Tiểu học)'}
+                                {s.gradeLevel === GradeLevel.PRE_K ? "Lớp Pre-K (Mầm non)" :
+                                  s.gradeLevel === GradeLevel.K ? "Lớp K (Mẫu giáo)" : "Lớp 1 (Tiểu học)"}
                               </span>
-                            </div>
-                            <div className="p-3 bg-orange-50 rounded-lg border border-orange-100">
-                              <span className="block text-xs text-slate-500 mb-1">Lớp đăng ký</span>
-                              <span className="block text-sm font-bold text-brand-orange">{s.gradeLevel}</span>
                             </div>
                           </div>
                         </div>
@@ -465,7 +482,7 @@ const StepItem = ({ number, title, desc, active, done, onClick }: any) => {
         {done ? <Check className="w-4 h-4" /> : <span className="text-sm font-bold">{number}</span>}
       </div>
       <div className="pt-1">
-        <h4 className={`text-sm font-bold mb-0.5 transition-colors ${active ? 'text-brand-blue' : done ? 'text-green-600' : 'text-slate-500'}`}>
+        <h4 className={`text-sm font-bold mb-0.5 transition-colors ${active ? 'text-brand-blue' : done ? 'text- -600' : 'text-slate-500'}`}>
           {title}
         </h4>
         <p className="text-xs text-slate-400">{desc}</p>
@@ -479,7 +496,9 @@ const StudentFormCard = ({ student, index, total, onChange, onRemove }: any) => 
     <div className="relative p-5 md:p-6 rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow group">
       {total > 1 && (
         <div className="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
-          <span className="text-xs font-bold text-brand-orange uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">Học sinh #{index + 1}</span>
+          <span className="text-xs font-bold text-brand-orange uppercase tracking-wider bg-orange-50 px-2 py-1 rounded">
+            Học sinh #{index + 1}
+          </span>
           <button title="Remove" onClick={onRemove} className="text-slate-400 hover:text-red-500 transition-colors p-1">
             <Trash2 className="w-4 h-4" />
           </button>
@@ -520,68 +539,65 @@ const StudentFormCard = ({ student, index, total, onChange, onRemove }: any) => 
           options={COUNTRIES}
         />
 
+        {/* PHẦN CHƯƠNG TRÌNH HỌC ĐÃ LÀM LẠI */}
         <div className="pt-2">
-          <label className="text-sm font-semibold text-brand-orange uppercase mb-2 block">Chương trình học<span className="text-red-500 pl-1 font-bold">*</span></label>
-          <div className="grid grid-cols-2 gap-3">
+          <label className="text-sm font-semibold text-brand-orange uppercase mb-3 block">
+            Chương trình học thử <span className="text-red-500 pl-1 font-bold">*</span>
+          </label>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <RadioCard
-              title="MVK"
+              title="Lớp Pre-K"
               subtitle="Mầm non"
-              active={student.packageType === PackageType.MVK}
-              onClick={() => onChange(student.id, 'packageType', PackageType.MVK)}
+              active={student.gradeLevel === GradeLevel.PRE_K}
+              onClick={() => {
+                onChange(student.id, 'packageType', PackageType.MVK);
+                onChange(student.id, 'gradeLevel', GradeLevel.PRE_K);
+              }}
             />
             <RadioCard
-              title="MVA"
+              title="Lớp K"
+              subtitle="Mẫu giáo"
+              active={student.gradeLevel === GradeLevel.K}
+              onClick={() => {
+                onChange(student.id, 'packageType', PackageType.MVA);
+                onChange(student.id, 'gradeLevel', GradeLevel.K);
+              }}
+            />
+            <RadioCard
+              title="Lớp 1"
               subtitle="Tiểu học"
-              active={student.packageType === PackageType.MVA}
-              onClick={() => onChange(student.id, 'packageType', PackageType.MVA)}
+              active={student.gradeLevel === GradeLevel.GRADE_1}
+              onClick={() => {
+                onChange(student.id, 'packageType', PackageType.MVA);
+                onChange(student.id, 'gradeLevel', GradeLevel.GRADE_1);
+              }}
             />
           </div>
         </div>
-
-        {student.packageType && (
-          <div className="animate-in fade-in slide-in-from-top-2">
-            <label className="text-xs font-semibold text-slate-900 uppercase mb-2 block">Lớp đăng ký <span className="text-red-500 font-bold">*</span></label>
-            <div className="flex flex-wrap gap-2">
-              {student.packageType === PackageType.MVK && (
-                <GradePill
-                  label="Lớp Pre-K (lớp mầm non)"
-                  active={student.gradeLevel === GradeLevel.PRE_K}
-                  onClick={() => onChange(student.id, 'gradeLevel', GradeLevel.PRE_K)}
-                />
-              )}
-              {student.packageType === PackageType.MVA && (
-                <>
-                  <GradePill
-                    label="K (lớp mẫu giáo)"
-                    active={student.gradeLevel === GradeLevel.K}
-                    onClick={() => onChange(student.id, 'gradeLevel', GradeLevel.K)}
-                  />
-                  <GradePill
-                    label="Lớp 1"
-                    active={student.gradeLevel === GradeLevel.GRADE_1}
-                    onClick={() => onChange(student.id, 'gradeLevel', GradeLevel.GRADE_1)}
-                  />
-                </>
-              )}
-            </div>
-          </div>
-        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-const FloatingInput = ({ label, required, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string, required?: boolean }) => (
+const FloatingInput = ({ label, required, prefix, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string, required?: boolean, prefix?: string }) => (
   <div className="relative group">
     <label className="absolute -top-2.5 left-3 bg-white px-1 text-sm text-slate-500 font-regular group-focus-within:text-brand-blue transition-colors z-10 flex items-center">
       {label}
       {required && <span className="text-red-500 ml-1 font-bold">*</span>}
     </label>
-    <input
-      {...props}
-      required={required}
-      className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all text-slate-700 placeholder:text-slate-400 bg-white"
-    />
+
+    <div className="relative">
+      {prefix && (
+        <div className="absolute left-0 top-0 bottom-0 flex items-center pl-4 pr-3 pointer-events-none">
+          <span className="text-slate-500 font-medium border-r border-slate-200 pr-3">{prefix}</span>
+        </div>
+      )}
+      <input
+        {...props}
+        required={required}
+        className={`w-full py-3.5 rounded-xl border border-slate-200 outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all text-slate-700 placeholder:text-slate-400 bg-white ${prefix ? 'pl-20 pr-4' : 'px-4'}`}
+      />
+    </div>
   </div>
 );
 
