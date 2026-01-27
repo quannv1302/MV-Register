@@ -10,7 +10,7 @@ import {
   Facebook, Instagram, Mail, ChevronRight, ChevronLeft, PlayCircle,
   CheckCircle2, Users, Trophy, Zap, Search, Calendar, ShieldCheck, Laptop, Languages, Clock,
   User2Icon, Gift, CreditCard, AlertCircle, GraduationCap, Palette, Microscope, Atom, Lightbulb,
-  User,
+  User, CalendarDays,
   UserCheck2
 } from 'lucide-react';
 
@@ -97,81 +97,134 @@ const App: React.FC = () => {
       </nav>
 
       {/* Hero Section - Centered Layout */}
-      <header className="relative bg-gradient-to-b from-brand-lightBlue/50 to-white pt-16 overflow-hidden">
-        {/* Background */}
+      <header className="relative min-h-screen flex items-center justify-center pt-24 pb-20 overflow-hidden bg-slate-50">
+        {/* 1. Nền và Hiệu ứng ánh sáng */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(57,107,219,0.08),transparent_70%)] pointer-events-none"></div>
+        <div className="absolute -top-24 left-0 w-96 h-96 bg-blue-400/10 rounded-full blur-[120px]"></div>
+        <div className="absolute -top-24 right-0 w-96 h-96 bg-indigo-400/10 rounded-full blur-[120px]"></div>
+
+        {/* Ảnh nền: Được xử lý lại để không làm rối mắt người đọc */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
-            alt="Background"
-            className="w-full h-full object-cover opacity-10 grayscale-[10%]"
+            src="https://images.unsplash.com/photo-1588075592446-265fd1e6e76f?auto=format&fit=crop&w=2000&q=80"
+            alt="Nursery school children with teacher"
+            className="w-full h-full object-cover opacity-75"
           />
-          <div className="absolute inset-0 bg-white/20 backdrop-blur-[1px]"></div>
+          {/* Lớp phủ Gradient để ảnh mờ dần về phía dưới, giúp footer/section sau dễ nhìn hơn */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-slate-50"></div>
         </div>
 
-        {/* icon bay lơ lửng */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-[12%] left-[8%] animate-float-icon text-blue-500">
-            <BookOpen className="w-6 h-6 md:w-[45px] md:h-[45px]" />
+        {/* Grid Pattern: Giảm nhẹ để tinh tế hơn */}
+        <div className="absolute inset-0 opacity-[0.04] z-1"
+          style={{ backgroundImage: 'linear-gradient(#1e293b 1px, transparent 1px), linear-gradient(90deg, #1e293b 1px, transparent 1px)', backgroundSize: '60px 60px' }}>
+        </div>
+
+        {/* 2. Floating Elements: Đổi sang màu Slate để sang trọng hơn trên nền sáng */}
+        <div className="absolute inset-0 pointer-events-none z-10 hidden md:block">
+          <div className="absolute top-[20%] left-[8%] animate-float-icon text-blue-500">
+            <BookOpen size={56} strokeWidth={1} />
           </div>
-          <div className="absolute top-[22%] right-[10%] animate-float-delayed text-orange-500">
-            <GraduationCap className="w-6 h-6 md:w-[55px] md:h-[55px]" />
+          <div className="absolute bottom-[20%] left-[10%] animate-float-delayed text-orange-500">
+            <Atom size={64} strokeWidth={1} />
           </div>
-          <div className="absolute top-[45%] left-[5%] animate-float-delayed text-lime-500 hidden md:block">
-            <Lightbulb className="w-6 h-6 md:w-[45px] md:h-[45px]" />
+          <div className="absolute top-[15%] right-[8%] animate-float-icon text-white">
+            <GraduationCap size={64} strokeWidth={1} />
           </div>
-          <div className="absolute bottom-[25%] right-[12%] animate-float-icon text-indigo-500 hidden md:block">
-            <Atom className="w-6 h-6 md:w-[50px] md:h-[50px]" />
-          </div>
-          <div className="absolute top-[8%] right-[25%] animate-float-icon text-emerald-500">
-            <Globe className="w-6 h-6 md:w-[40px] md:h-[40px]" />
-          </div>
-          <div className="absolute bottom-[15%] left-[12%] animate-float-delayed text-rose-500 hidden md:block">
-            <Palette className="w-6 h-6 md:w-[42px] md:h-[42px]" />
+          <div className="absolute bottom-[25%] right-[10%] animate-float-delayed text-purple-500">
+            <Lightbulb size={56} strokeWidth={1} />
           </div>
         </div>
-        <div className="z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2 bg-white border border-blue-100 px-5 py-2.5 rounded-full shadow-sm mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="bg-brand-orange/10 p-2 rounded-full">
-              <Calendar className="w-4 h-4 text-brand-orange" />
+
+        {/* 3. Khối nội dung chính (Glassmorphism) */}
+        <div className="relative z-20 max-w-6xl mx-auto px-4 w-full">
+          <div className="bg-white/95 backdrop-blur-xl border border-white/80 p-8 md:p-16 rounded-[3.5rem] shadow-[0_30px_100px_-20px_rgba(57,107,219,0.15)] flex flex-col items-center text-center">
+
+            {/* Badge SY27 */}
+            <div className="mb-10 px-5 py-2 rounded-full border border-blue-100 bg-white/50 shadow-sm flex items-center gap-3">
+              <CalendarDays className="w-5 h-5 text-[rgb(57,107,219)]" />
+              <span className="text-[rgb(57,107,219)] text-[12px] md:text-sm font-black uppercase">Năm học 2026 - 2027 (SY27)</span>
             </div>
-            <span className="text-sm font-bold text-brand-blue uppercase tracking-wide">Năm học 2026 - 2027 (SY27)</span>
-          </div>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-[1.15] text-slate-900 max-w-7xl mb-6 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
-            Chương trình giáo dục phổ thông <br />
-            <span className="text-brand-blue relative inline-block">
-              theo tiêu chuẩn của Hoa Kỳ
-              <svg className="absolute w-full h-3 -bottom-1 left-0 text-yellow-300 opacity-60" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" /></svg>
-            </span>
-          </h1>
 
-          {/* Subtext */}
-          <p className="text-lg md:text-2xl font-bold text-slate-700 max-w-4xl leading-relaxed mb-2 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
-            Dành cho học sinh Việt Nam đang sinh sống tại
-          </p>
-          <p className="text-xl md:text-3xl font-bold text-slate-700 max-w-4xl leading-relaxed mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
-            <span className="text-brand-blue bg-blue-50 px-4 py-1 rounded-xl shadow-sm inline-block transform hover:scale-105 transition-transform duration-300 border border-blue-100 mt-2 md:mt-0">Hàn - Nhật - Trung Quốc</span>
-          </p>
+            {/* Heading phân tầng: Nhỏ ở trên, cực lớn ở dưới */}
+            <div className="mb-12 relative group">
+              {/* Subheading: Nhỏ gọn, tinh tế để nhường chỗ cho tiêu đề chính */}
+              <h2 className="flex items-center justify-center gap-3 text-brand-orange font-extrabold uppercase text-xl md:text-2xl mb-2 tracking-wider">
+                {/* Thanh line bên trái */}
+                <span className="w-8 h-[3px] bg-brand-orange rounded-full hidden sm:block"></span>
 
-          {/* Buttons */}
-          <div className="flex flex-col items-center sm:items-start gap-4 mb-16 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
-            <div className="flex flex-col gap-2">
+                Chương trình giáo dục phổ thông
+
+                {/* Thanh line bên phải để tạo sự đối xứng */}
+                <span className="w-8 h-[3px] bg-brand-orange rounded-full hidden sm:block"></span>
+              </h2>
+
+              {/* Main Heading: Gradient + Flag Integration */}
+              <h1 className="text-4xl md:text-7xl font-black leading-[1.1] tracking-tighter">
+                <span className="block text-brand-blue mb-1">THEO TIÊU CHUẨN</span>
+
+                <span className="relative inline-flex items-center gap-4">
+                  {/* Chữ HOA KỲ với hiệu ứng Gradient từ Xanh sang Đỏ đặc trưng */}
+                  <span className="inline-block pb-2 bg-clip-text text-transparent bg-gradient-to-r from-[#002868] via-[#002868] to-[#bf0a30] drop-shadow-sm leading-tight">
+                    HOA KỲ
+                  </span>
+
+                  {/* Flag Icon: Thiết kế bo góc, đổ bóng hiện đại */}
+                  <div className="relative w-14 h-10 md:w-24 md:h-16 flex-shrink-0">
+                    <div className="absolute inset-0 bg-red-500/20 blur-lg rounded-lg transform scale-110"></div>
+                    <img
+                      src="https://flagcdn.com/us.svg"
+                      alt="US Flag"
+                      className="relative z-10 w-full h-full object-cover rounded-md shadow-2xl border-2 border-white transform -rotate-2 group-hover:rotate-0 transition-transform duration-500"
+                    />
+                  </div>
+
+                  {/* Hiệu ứng gạch chân Gradient thay cho mảng màu cũ */}
+                  <div className="absolute -bottom-2 left-0 w-full h-2 md:h-4 bg-gradient-to-r from-red-600/20 to-transparent skew-x-[-15deg] -z-10"></div>
+                </span>
+              </h1>
+            </div>
+
+            {/* Locations Section */}
+            <div className="flex flex-col items-center space-y-8 mb-14 w-full">
+              <div className="flex items-center gap-4 w-full max-w-lg">
+                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-slate-200"></div>
+                <p className="text-slate-900 font-bold uppercase tracking-[0.1em] text-[14px] md:text-[16px] text-center">
+                  Dành cho học sinh Việt Nam <br /> đang sinh sống tại
+                </p>
+                <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-slate-200"></div>
+              </div>
+
+              <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
+                {[
+                  { name: 'HÀN QUỐC', flag: 'https://flagcdn.com/w80/kr.png', hover: 'hover:border-blue-200' },
+                  { name: 'NHẬT BẢN', flag: 'https://flagcdn.com/w80/jp.png', hover: 'hover:border-blue-200' },
+                  { name: 'TRUNG QUỐC', flag: 'https://flagcdn.com/w80/cn.png', hover: 'hover:border-blue-200' }
+                ].map((item) => (
+                  <div key={item.name} className={`group flex items-center gap-3 md:gap-4 px-4 py-2.5 md:px-6 md:py-3 rounded-2xl bg-white border border-slate-100 shadow-sm transition-all duration-300 ${item.hover} hover:shadow-md hover:-translate-y-1`}>
+                    <div className="w-8 h-6 md:w-12 md:h-9 overflow-hidden rounded-md border border-slate-200 flex-shrink-0 shadow-inner">
+                      <img src={item.flag} alt={item.name} className="w-full h-full object-cover" />
+                    </div>
+                    <span className="text-sm md:text-lg font-black text-slate-800 tracking-tight group-hover:text-[rgb(57,107,219)] transition-colors">
+                      {item.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA Section */}
+            <div className="flex flex-col items-center gap-6">
               <Button
-                title=""
                 onClick={openRegistration}
-                variant="primary"
-                className="!rounded-full text-lg px-8 py-4 uppercase shadow-md shadow-orange-200 hover:scale-105 transition-transform"
+                className="!rounded-full text-sm md:text-base px-10 py-4 bg-brand-orange text-white font-black uppercase tracking-widest shadow-[0_10px_30px_rgba(234,88,12,0.3)] hover:scale-105 active:scale-95 transition-all"
               >
-                Đăng ký học thử miễn phí!
+                Đăng ký học thử ngay
               </Button>
 
-              {/* Dòng text bổ sung */}
-              <div className="flex items-center gap-2 px-4 py-1">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                </span>
-                <p className="text-orange-500 font-regular text-md">
-                  Học sinh được học thử miễn phí 1 tháng
+              <div className="flex items-center gap-3 px-6 py-2 rounded-full border border-orange-100 bg-white">
+                <div className="w-1.5 h-1.5 bg-brand-orange rounded-full animate-pulse"></div>
+                <p className="text-slate-600 text-xs md:text-sm font-bold">
+                  Học thử miễn phí <span className="text-brand-orange">01 tháng</span> trải nghiệm
                 </p>
               </div>
             </div>
